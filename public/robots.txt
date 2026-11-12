@@ -1,0 +1,6 @@
+# Robots.txt - SOLIS TECH
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://solistech.com.br/sitemap.xml

@@ -1,0 +1,6 @@
+{
+  "name": "Solis Tech | Energia Solar e Investimento em Usinas no Ceará",
+  "description": "Site oficial da Solis Tech. Soluções de alta engenharia fotovoltaica e usinas solares para investimento e locação em Juazeiro do Norte, Iguatu e todo o Ceará.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
