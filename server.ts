@@ -234,6 +234,9 @@ app.post('/api/leads', async (req: Request, res: Response) => {
   }
 });
 
+// Servir pasta public diretamente pelo Express para suporte completo a HTTP 206 (Range requests para vídeo)
+app.use(express.static(path.resolve(__dirname, 'public')));
+
 // Setup Vite dev server ou arquivos estáticos de produção
 async function startServer() {
   if (process.env.NODE_ENV !== 'production') {

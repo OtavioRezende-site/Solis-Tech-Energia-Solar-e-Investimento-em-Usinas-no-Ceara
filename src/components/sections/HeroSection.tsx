@@ -16,6 +16,13 @@ export const HeroSection: React.FC = () => {
   useEffect(() => {
     if (prefersReduced && videoRef.current) {
       videoRef.current.pause();
+    } else if (videoRef.current) {
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay policy or low power mode
+        });
+      }
     }
   }, [prefersReduced]);
 
@@ -65,15 +72,18 @@ export const HeroSection: React.FC = () => {
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="auto"
             poster={ADMIN_CONFIG.heroPosterUrl}
             onLoadedData={() => setIsVideoLoaded(true)}
+            onCanPlay={() => setIsVideoLoaded(true)}
+            onPlaying={() => setIsVideoLoaded(true)}
             onError={() => setVideoError(true)}
-            className={`w-full h-full object-cover transition-opacity duration-1000 ${
+            className={`w-full h-full object-cover contrast-[1.07] brightness-[1.03] saturate-[1.06] transition-opacity duration-700 ${
               isVideoLoaded ? 'opacity-100' : 'opacity-0'
             }`}
           >
             <source src={ADMIN_CONFIG.heroVideoUrl} type="video/mp4" />
+            <source src="/assets/aistudio/Solar_energy_company_corporate_film_580564f5_1080p_d56132b8.mp4" type="video/mp4" />
           </video>
         ) : null}
 
@@ -87,19 +97,13 @@ export const HeroSection: React.FC = () => {
           />
         )}
 
-        {/* Camadas de Overlay Escuro com gradiente direcional refinado */}
-        <div className="absolute inset-0 bg-linear-to-r from-[#091D2F]/95 via-[#091D2F]/80 to-[#102D46]/60" />
-        <div className="absolute inset-0 bg-linear-to-t from-[#091D2F] via-transparent to-[#091D2F]/70" />
+        {/* Camadas de Overlay Equilibradas: nitidez máxima no vídeo com legibilidade total nos textos */}
+        <div className="absolute inset-0 bg-linear-to-r from-[#091D2F]/88 via-[#091D2F]/50 to-[#091D2F]/15 lg:from-[#091D2F]/82 lg:via-[#091D2F]/35 lg:to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-[#091D2F] via-transparent to-[#091D2F]/35" />
 
-        {/* Efeito sutil de malha de radiação solar */}
+        {/* Efeito sutil de luz ambiente solar */}
         <div
-          className="absolute inset-0 opacity-10 bg-[radial-gradient(#B8EF35_1px,transparent_1px)] [background-size:28px_28px]"
-          aria-hidden="true"
-        />
-
-        {/* Efeito de luz ambiente solar */}
-        <div
-          className="absolute -top-24 -left-24 w-96 h-96 bg-[#B8EF35]/15 rounded-full blur-3xl pointer-events-none"
+          className="absolute -top-24 -left-24 w-96 h-96 bg-[#B8EF35]/12 rounded-full blur-3xl pointer-events-none"
           aria-hidden="true"
         />
       </div>
@@ -113,7 +117,7 @@ export const HeroSection: React.FC = () => {
           className="max-w-3xl space-y-6 text-left"
         >
           {/* Eyebrow institucional */}
-          <motion.div variants={heroItemVariants} className="flex items-center gap-2">
+          <motion.div variants={heroItemVariants} className="flex items-center gap-2 drop-shadow-sm">
             <span className="w-6 h-0.5 bg-[#B8EF35] rounded-full" aria-hidden="true" />
             <p className="text-xs sm:text-sm font-bold tracking-widest text-[#B8EF35] uppercase">
               {COMPANY_INFO.eyebrow}
@@ -123,7 +127,7 @@ export const HeroSection: React.FC = () => {
           {/* Headline Principal */}
           <motion.h1
             variants={heroItemVariants}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.12] tracking-tight text-balance"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.12] tracking-tight text-balance drop-shadow-md"
           >
             {COMPANY_INFO.headline}
           </motion.h1>
@@ -131,7 +135,7 @@ export const HeroSection: React.FC = () => {
           {/* Subheadline */}
           <motion.p
             variants={heroItemVariants}
-            className="text-base sm:text-lg lg:text-xl text-slate-200 leading-relaxed font-normal max-w-2xl text-pretty"
+            className="text-base sm:text-lg lg:text-xl text-slate-100 leading-relaxed font-normal max-w-2xl text-pretty drop-shadow-sm"
           >
             {COMPANY_INFO.subheadline}
           </motion.p>
@@ -139,7 +143,7 @@ export const HeroSection: React.FC = () => {
           {/* Destaques rápidos de credibilidade */}
           <motion.div
             variants={heroItemVariants}
-            className="flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-slate-300 pt-1"
+            className="flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-slate-200 pt-1 drop-shadow-sm"
           >
             <div className="flex items-center gap-1.5">
               <TrendingUp className="w-4 h-4 text-[#B8EF35]" />

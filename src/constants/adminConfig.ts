@@ -43,8 +43,8 @@ export interface SolisTechAdminConfig {
 }
 
 export const ADMIN_CONFIG: SolisTechAdminConfig = {
-  // 1. Logotipo oficial: quando o arquivo vetorial for fornecido, aponte aqui
-  officialLogoUrl: null,
+  // 1. Logotipo oficial da Solis Tech
+  officialLogoUrl: "/images/logo-solis-official.png",
   
   // 2. Vídeo e Poster do Hero
   heroVideoUrl: "/videos/solis-hero.mp4",
