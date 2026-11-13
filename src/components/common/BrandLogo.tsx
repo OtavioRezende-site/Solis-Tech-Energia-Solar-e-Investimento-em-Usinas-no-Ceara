@@ -20,7 +20,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   showText = true,
 }) => {
   const isLight = variant === 'light';
-  const logoSrc = officialLogoUrl || ADMIN_CONFIG.officialLogoUrl || '/images/logo-solis-official.png';
+  const logoSrc = officialLogoUrl || ADMIN_CONFIG.officialLogoUrl || './images/logo-solis-official.png';
 
   return (
     <div className={`flex items-center gap-2.5 sm:gap-3 font-bold tracking-tight select-none ${className}`}>
@@ -28,7 +28,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
       <div className="relative shrink-0 flex items-center justify-center">
         <img
           src={logoSrc}
-          alt="Solis Tech - Logotipo Oficial"
+          alt="Logotipo Oficial da Solis Tech"
           className="w-9 h-9 sm:w-10 sm:h-10 object-contain rounded-full ring-1 ring-[#B8EF35]/40 shadow-xs transition-transform duration-200 hover:scale-105"
         />
       </div>

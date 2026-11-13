@@ -8,7 +8,6 @@ import { Header } from './components/common/Header';
 import { Footer } from './components/common/Footer';
 import { WhatsAppButton } from './components/common/WhatsAppButton';
 import { MobileBottomBar } from './components/common/MobileBottomBar';
-import { BackToTopButton } from './components/common/BackToTopButton';
 import { SectionDivider } from './components/common/SectionDivider';
 import { HeroSection } from './components/sections/HeroSection';
 import { InstitutionalIntro } from './components/sections/InstitutionalIntro';
@@ -35,7 +34,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-[#102D46] selection:bg-[#B8EF35] selection:text-[#091D2F] font-sans antialiased overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-white text-[#102D46] selection:bg-[#B8EF35] selection:text-[#091D2F] font-sans antialiased overflow-x-clip">
       {/* Header Fixo com indicador animado Motion */}
       <Header />
 
@@ -119,9 +118,6 @@ export default function App() {
 
       {/* Barra fixa inferior mobile */}
       <MobileBottomBar onSelectFlow={handleSelectMobileFlow} />
-
-      {/* Botão de voltar ao topo */}
-      <BackToTopButton />
 
       {/* Botão flutuante de WhatsApp comercial */}
       <WhatsAppButton />

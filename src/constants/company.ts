@@ -9,17 +9,17 @@ export const COMPANY_INFO = {
   cnpj: "45.286.061/0001-03",
   foundingDate: "14/02/2022",
   slogan: "Com a Solis, o sol trabalha por você!",
-  eyebrow: "ENERGIA SOLAR • TECNOLOGIA • INVESTIMENTO",
-  headline: "Transforme a energia do sol em novas oportunidades.",
+  eyebrow: "INVESTIMENTO EM ATIVOS REAIS • USINAS SOLARES NO CEARÁ",
+  headline: "Invista em usinas solares com retorno de até R$ 6.300 por mês.",
   subheadline:
-    "Conheça as soluções da Solis Tech em energia solar e descubra projetos de usinas voltados à locação, com atendimento especializado no Ceará.",
+    "Um modelo de negócio muito mais rentável do que construir imóveis para alugar. Gere receita mensal recorrente através da locação de energia solar, com engenharia e gestão da Solis Tech.",
   
   // Mensagens oficiais padronizadas para WhatsApp
   whatsappMessages: {
     investment:
-      "Olá, Joel! Conheci a Solis Tech pelo site e gostaria de receber informações sobre as usinas solares para investimento e o modelo de locação.",
+      "Olá, Joel! Vi no site da Solis Tech o modelo de investimento em usinas solares (com retorno de até R$ 6.300/mês) e quero receber o estudo de ROI e condições.",
     quote:
-      "Olá! Conheci a Solis Tech pelo site e gostaria de solicitar um orçamento de energia solar.",
+      "Olá! Conheci a Solis Tech pelo site e gostaria de solicitar um projeto fotovoltaico para meu imóvel ou empresa.",
   },
 
   // Contato Comercial Principal & Equipe Comercial
@@ -28,10 +28,10 @@ export const COMPANY_INFO = {
   contactPerson: "Joel Patricio", // Contato principal para investimento e atendimento inicial
   whatsappUrl: "https://wa.me/5588996004445",
   whatsappInvestmentUrl: `https://wa.me/5588996004445?text=${encodeURIComponent(
-    "Olá, Joel! Conheci a Solis Tech pelo site e gostaria de receber informações sobre as usinas solares para investimento e o modelo de locação."
+    "Olá, Joel! Vi no site da Solis Tech o modelo de investimento em usinas solares (com retorno de até R$ 6.300/mês) e quero receber o estudo de ROI e condições."
   )}`,
   whatsappQuoteUrl: `https://wa.me/5588996004445?text=${encodeURIComponent(
-    "Olá! Conheci a Solis Tech pelo site e gostaria de solicitar um orçamento de energia solar."
+    "Olá! Conheci a Solis Tech pelo site e gostaria de solicitar um projeto fotovoltaico para meu imóvel ou empresa."
   )}`,
   whatsappCustomMessage: (text: string) =>
     `https://wa.me/5588996004445?text=${encodeURIComponent(text)}`,
@@ -126,11 +126,11 @@ export const COMPANY_INFO = {
 
 export const NAV_LINKS = [
   { label: "Início", href: "#inicio" },
-  { label: "Investimento Solar", href: "#investimento" },
+  { label: "Rentabilidade", href: "#apresentacao" },
+  { label: "Usinas & ROI", href: "#investimento" },
   { label: "Jornada", href: "#jornada" },
   { label: "Soluções", href: "#solucoes" },
   { label: "Diferenciais", href: "#diferenciais" },
-  { label: "Portfólio", href: "#projetos" },
   { label: "Sobre Nós", href: "#sobre" },
   { label: "Contato", href: "#contato" },
 ] as const;

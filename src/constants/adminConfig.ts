@@ -44,11 +44,11 @@ export interface SolisTechAdminConfig {
 
 export const ADMIN_CONFIG: SolisTechAdminConfig = {
   // 1. Logotipo oficial da Solis Tech
-  officialLogoUrl: "/images/logo-solis-official.png",
+  officialLogoUrl: "./images/logo-solis-official.png",
   
   // 2. Vídeo e Poster do Hero
-  heroVideoUrl: "/videos/solis-hero.mp4",
-  heroPosterUrl: "/images/hero-poster.webp",
+  heroVideoUrl: "./videos/solis-hero.mp4",
+  heroPosterUrl: "./images/hero-poster.webp",
 
   // 3. Domínio Canônico
   canonicalDomain: "https://solistech.com.br",

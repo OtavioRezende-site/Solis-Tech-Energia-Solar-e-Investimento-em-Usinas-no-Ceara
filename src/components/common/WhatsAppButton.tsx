@@ -1,21 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { MessageCircle, X } from 'lucide-react';
+import { X } from 'lucide-react';
+import { WhatsAppIcon } from './BrandIcons';
 import { COMPANY_INFO } from '../../constants/company';
 import { trackEvent } from '../../utils/tracking';
 
 export const WhatsAppButton: React.FC = () => {
   const [showTooltip, setShowTooltip] = useState(false);
-  const [hasScrolled, setHasScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setHasScrolled(true);
-      }
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // Exibe dica contextual após alguns segundos
   useEffect(() => {
@@ -24,10 +14,6 @@ export const WhatsAppButton: React.FC = () => {
     }, 7000);
     return () => clearTimeout(timer);
   }, []);
-
-  if (!hasScrolled) {
-    return null;
-  }
 
   const handleWhatsAppClick = () => {
     trackEvent('whatsapp_click', {
@@ -39,7 +25,7 @@ export const WhatsAppButton: React.FC = () => {
   return (
     <aside
       aria-label="Canal de atendimento direto no WhatsApp"
-      className="fixed bottom-16 md:bottom-6 right-4 sm:right-6 z-40 flex items-end gap-3"
+      className="fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-40 flex items-end gap-3"
     >
       {/* Tooltip com fechamento */}
       {showTooltip && (
@@ -65,8 +51,8 @@ export const WhatsAppButton: React.FC = () => {
         className="group relative flex items-center justify-center w-13 h-13 sm:w-14 sm:h-14 bg-[#102D46] text-[#B8EF35] hover:bg-[#091D2F] rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 focus:outline-hidden focus-visible:ring-4 focus-visible:ring-[#B8EF35]"
         aria-label={`Falar com ${COMPANY_INFO.contactPerson} da Solis Tech no WhatsApp`}
       >
-        <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7 transition-transform group-hover:scale-110" />
-        <span className="sr-only">Atendimento Comercial no WhatsApp: {COMPANY_INFO.phone}</span>
+        <WhatsAppIcon className="w-6 h-6 sm:w-7 sm:h-7 transition-transform group-hover:scale-110" />
+        <span className="sr-only">Atendimento Comercial no WhatsApp {COMPANY_INFO.phone}</span>
       </a>
     </aside>
   );

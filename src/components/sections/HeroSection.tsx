@@ -83,7 +83,7 @@ export const HeroSection: React.FC = () => {
             }`}
           >
             <source src={ADMIN_CONFIG.heroVideoUrl} type="video/mp4" />
-            <source src="/assets/aistudio/Solar_energy_company_corporate_film_580564f5_1080p_d56132b8.mp4" type="video/mp4" />
+            <source src="./assets/aistudio/Solar_energy_company_corporate_film_580564f5_1080p_d56132b8.mp4" type="video/mp4" />
           </video>
         ) : null}
 
@@ -109,7 +109,7 @@ export const HeroSection: React.FC = () => {
       </div>
 
       {/* Conteúdo Principal do Hero com Motion Stagger */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16 lg:pt-36 lg:pb-24">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-24 sm:pt-28 sm:pb-24 lg:pt-36 lg:pb-24">
         <motion.div
           variants={heroContainerVariants}
           initial="hidden"
@@ -127,7 +127,7 @@ export const HeroSection: React.FC = () => {
           {/* Headline Principal */}
           <motion.h1
             variants={heroItemVariants}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.12] tracking-tight text-balance drop-shadow-md"
+            className="text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.12] tracking-tight text-balance drop-shadow-md"
           >
             {COMPANY_INFO.headline}
           </motion.h1>
@@ -140,29 +140,31 @@ export const HeroSection: React.FC = () => {
             {COMPANY_INFO.subheadline}
           </motion.p>
 
-          {/* Destaques rápidos de credibilidade */}
+          {/* Destaques rápidos de retorno e solidez — texto limpo sem pílulas */}
           <motion.div
             variants={heroItemVariants}
-            className="flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-slate-200 pt-1 drop-shadow-sm"
+            className="flex flex-wrap items-center gap-y-2 gap-x-5 text-xs sm:text-sm text-slate-200 pt-1 drop-shadow-sm"
           >
-            <div className="flex items-center gap-1.5">
-              <TrendingUp className="w-4 h-4 text-[#B8EF35]" />
-              <span>Alta rentabilidade em locação</span>
+            <div className="flex items-center gap-2 font-semibold text-white">
+              <TrendingUp className="w-4 h-4 text-[#B8EF35] shrink-0" />
+              <span className="tabular-nums">Receita de até R$ 6.300/mês</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-[#B8EF35]" />
-              <span>Engenharia e homologação própria</span>
+            <span className="hidden sm:inline text-white/30" aria-hidden="true">|</span>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-[#B8EF35] shrink-0" />
+              <span>ROI superior ao aluguel de imóveis</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <SunMedium className="w-4 h-4 text-[#B8EF35]" />
-              <span>Atuação Juazeiro do Norte & Iguatu</span>
+            <span className="hidden sm:inline text-white/30" aria-hidden="true">|</span>
+            <div className="flex items-center gap-2">
+              <SunMedium className="w-4 h-4 text-[#B8EF35] shrink-0" />
+              <span>Engenharia e operação no Ceará</span>
             </div>
           </motion.div>
 
           {/* Bloco de Ações / CTAs com Microinterações */}
           <motion.div
             variants={heroItemVariants}
-            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4 sm:pt-6"
+            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-3 sm:pt-5"
           >
             <motion.button
               type="button"
@@ -170,7 +172,7 @@ export const HeroSection: React.FC = () => {
               {...buttonPrimaryMotion}
               className="inline-flex items-center justify-center gap-3 px-6 py-4 rounded-xl text-sm sm:text-base font-bold text-[#091D2F] bg-[#B8EF35] hover:bg-[#A3DC22] transition-colors shadow-lg cursor-pointer focus:outline-hidden focus-visible:ring-3 focus-visible:ring-[#B8EF35]"
             >
-              <span>Conhecer oportunidades de investimento</span>
+              <span>Ver modelo de ROI e rentabilidade</span>
               <ArrowRight className="w-4 h-4" />
             </motion.button>
 
@@ -180,15 +182,18 @@ export const HeroSection: React.FC = () => {
               {...buttonSecondaryMotion}
               className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-sm sm:text-base font-semibold text-white bg-white/10 hover:bg-white/15 border border-white/20 backdrop-blur-xs transition-colors cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white"
             >
-              <span>Solicitar um projeto solar</span>
+              <span>Solicitar estudo de investimento</span>
             </motion.button>
           </motion.div>
 
-          {/* Slogan Institucional */}
-          <motion.div variants={heroItemVariants} className="pt-4 border-t border-white/10">
+          {/* Nota discreta de transparência e slogan */}
+          <motion.div variants={heroItemVariants} className="pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <p className="text-xs sm:text-sm text-slate-300 italic">
               &ldquo;{COMPANY_INFO.slogan}&rdquo;
             </p>
+            <span className="text-[11px] text-slate-400">
+              *Potencial mensal estimado conforme porte da usina e contrato.
+            </span>
           </motion.div>
         </motion.div>
       </div>

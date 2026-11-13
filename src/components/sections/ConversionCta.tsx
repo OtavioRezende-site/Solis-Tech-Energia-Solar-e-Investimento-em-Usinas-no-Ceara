@@ -1,7 +1,9 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ArrowRight, MessageCircle } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { WhatsAppIcon } from '../common/BrandIcons';
 import { COMPANY_INFO } from '../../constants/company';
+import { trackEvent } from '../../utils/tracking';
 import { fadeInUp, continuousViewport, buttonPrimaryMotion, buttonSecondaryMotion } from '../../utils/motion';
 
 interface ConversionCtaProps {
@@ -44,15 +46,15 @@ export const ConversionCta: React.FC<ConversionCtaProps> = ({ onSelectInterest }
           className="space-y-4"
         >
           <span className="inline-block text-xs font-bold tracking-widest text-[#B8EF35] uppercase">
-            Atendimento Direto e Especializado
+            Oportunidade de Investimento
           </span>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight text-balance">
-            Seu próximo projeto começa com uma conversa.
+            Coloque seu capital para gerar até R$ 6.300 por mês em energia solar.
           </h2>
 
           <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed text-pretty">
-            Fale com a Solis Tech, apresente seu objetivo e descubra quais soluções podem fazer sentido para você.
+            Converse com a equipe da Solis Tech, receba o estudo comparativo de ROI e descubra como uma usina para locação supera investimentos imobiliários tradicionais.
           </p>
         </motion.div>
 
@@ -70,7 +72,7 @@ export const ConversionCta: React.FC<ConversionCtaProps> = ({ onSelectInterest }
             {...buttonPrimaryMotion}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl text-sm font-bold text-[#091D2F] bg-[#B8EF35] hover:bg-[#A3DC22] transition-colors shadow-lg cursor-pointer"
           >
-            <span>Quero conhecer usinas para investimento</span>
+            <span>Solicitar estudo de ROI e usinas</span>
             <ArrowRight className="w-4 h-4" />
           </motion.button>
 
@@ -80,13 +82,21 @@ export const ConversionCta: React.FC<ConversionCtaProps> = ({ onSelectInterest }
             {...buttonSecondaryMotion}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl text-sm font-semibold text-white bg-white/10 hover:bg-white/15 border border-white/20 transition-colors cursor-pointer"
           >
-            <span>Solicitar orçamento solar</span>
+            <span>Solicitar projeto para meu imóvel</span>
           </motion.button>
         </motion.div>
 
-        <div className="pt-4 flex items-center justify-center gap-2 text-xs text-slate-300">
-          <MessageCircle className="w-3.5 h-3.5 text-[#B8EF35]" />
-          <span>Atendimento comercial via WhatsApp: {COMPANY_INFO.phone} (Joel Patricio)</span>
+        <div className="pt-4 flex items-center justify-center">
+          <a
+            href={COMPANY_INFO.whatsappInvestmentUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackEvent('whatsapp_click', { source: 'conversion_cta' })}
+            className="inline-flex flex-wrap items-center justify-center gap-2 text-xs text-slate-300 hover:text-white transition-colors"
+          >
+            <WhatsAppIcon className="w-4 h-4 text-[#B8EF35] shrink-0" />
+            <span>Atendimento comercial via WhatsApp pelo {COMPANY_INFO.phone} (Joel Patricio)</span>
+          </a>
         </div>
       </div>
     </section>

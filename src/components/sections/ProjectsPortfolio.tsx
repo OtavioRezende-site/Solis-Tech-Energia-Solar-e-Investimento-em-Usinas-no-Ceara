@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { MapPin, ArrowUpRight, ShieldAlert, Sparkles } from 'lucide-react';
+import { motion } from 'motion/react';
+import { MapPin, ArrowUpRight, ShieldAlert } from 'lucide-react';
 import { ProjectItem } from '../../types';
-import { fadeInUp, staggerContainer, staggerItem, continuousViewport, smoothEase } from '../../utils/motion';
+import { fadeInUp, continuousViewport } from '../../utils/motion';
 
 export const ProjectsPortfolio: React.FC = () => {
   const [filter, setFilter] = useState<string>('all');
@@ -13,44 +13,44 @@ export const ProjectsPortfolio: React.FC = () => {
       name: "Fazenda Recreio",
       city: "Sousa / PB",
       category: "Rural",
-      operationalStatus: "Em levantamento cadastral",
+      operationalStatus: "Em validação cadastral",
       description:
-        "Referência de projeto de geração solar para atendimento rural no semiárido paraibano.",
+        "Referência de projeto de geração solar para atendimento rural e operações agrícolas no semiárido paraibano.",
       isPendingValidation: true,
-      validationNotice: "Referência documental divulgada anteriormente pela marca, com dados técnicos e autorização de imagem em processo de validação formal.",
+      validationNotice: "Dados técnicos de potência e imagens autorizadas em processo de validação documental.",
     },
     {
       id: "ref-2",
       name: "Kari Móveis Planejados",
       city: "Juazeiro do Norte / CE",
       category: "Comercial",
-      operationalStatus: "Em levantamento cadastral",
+      operationalStatus: "Em validação cadastral",
       description:
-        "Referência de sistema fotovoltaico para redução de despesas elétricas em empresa do setor moveleiro no Cariri.",
+        "Referência de sistema fotovoltaico para otimização de despesas elétricas em operação comercial e industrial no Cariri.",
       isPendingValidation: true,
-      validationNotice: "Referência citada em comunicações preliminares da marca, aguardando validação de potência homologada e autorização de divulgação.",
+      validationNotice: "Aguardando conferência final de potência homologada e autorização de divulgação.",
     },
     {
       id: "ref-3",
       name: "Empresa Caminho da Paz",
       city: "Iguatu / CE",
       category: "Comercial",
-      operationalStatus: "Em levantamento cadastral",
+      operationalStatus: "Em validação cadastral",
       description:
-        "Referência de atendimento no polo Centro-Sul cearense para fornecimento e infraestrutura de energia fotovoltaica.",
+        "Referência de atendimento empresarial no polo Centro Sul cearense para infraestrutura de geração fotovoltaica.",
       isPendingValidation: true,
-      validationNotice: "Em fase de compilação de ficha técnica de engenharia e autorização de publicação institucional.",
+      validationNotice: "Em fase de compilação da ficha técnica executiva e termo de autorização institucional.",
     },
     {
       id: "ref-4",
       name: "Fazenda Lua",
       city: "Orós / CE",
       category: "Rural",
-      operationalStatus: "Em levantamento cadastral",
+      operationalStatus: "Em validação cadastral",
       description:
-        "Referência para atendimento de propriedades do agronegócio e sistemas de bombeamento e força na região de Orós.",
+        "Referência para atendimento de propriedades do agronegócio, sistemas de bombeamento e força na região de Orós.",
       isPendingValidation: true,
-      validationNotice: "Projeto referenciado pela marca, aguardando validação de dados operacionais e registros fotográficos autorizados.",
+      validationNotice: "Aguardando validação final de indicadores operacionais e registros fotográficos autorizados.",
     },
   ];
 
@@ -67,42 +67,39 @@ export const ProjectsPortfolio: React.FC = () => {
           initial="hidden"
           whileInView="visible"
           viewport={continuousViewport}
-          className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-6"
+          className="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-6"
         >
-          <div className="max-w-2xl space-y-4">
-            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#102D46]">
-              <span className="w-2 h-2 rounded-full bg-[#B8EF35]" />
-              <span>Galeria de Referências</span>
-            </div>
-
+          <div className="max-w-2xl space-y-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#102D46] block">
+              Referências Regionais
+            </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#102D46] tracking-tight leading-tight text-balance">
-              Projetos e referências de atuação regional
+              Atuação comprovada no Cariri, Centro Sul e semiárido.
             </h2>
-
-            <p className="text-base sm:text-lg text-[#526273] leading-relaxed">
-              Estrutura preparada para catalogação dos cases reais atendidos pela Solis Tech no Ceará e estados vizinhos.
+            <p className="text-base text-[#526273] leading-relaxed">
+              Diretório de referências comerciais e rurais atendidas pela Solis Tech, com catalogação transparente de registros.
             </p>
           </div>
 
           {/* Filtros funcionais */}
-          <div className="flex flex-wrap items-center gap-1.5 p-1 bg-white rounded-xl border border-[#E5EBF0] self-start lg:self-end shadow-2xs">
+          <div className="flex flex-wrap items-center gap-1 p-1 bg-white rounded-xl border border-[#E5EBF0] self-start lg:self-end">
             <button
               type="button"
               onClick={() => setFilter('all')}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
                 filter === 'all'
-                  ? 'bg-[#102D46] text-white shadow-xs'
+                  ? 'bg-[#102D46] text-white'
                   : 'text-[#526273] hover:text-[#102D46]'
               }`}
             >
-              Todas as Referências
+              Todas
             </button>
             <button
               type="button"
               onClick={() => setFilter('comercial')}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
                 filter === 'comercial'
-                  ? 'bg-[#102D46] text-white shadow-xs'
+                  ? 'bg-[#102D46] text-white'
                   : 'text-[#526273] hover:text-[#102D46]'
               }`}
             >
@@ -111,9 +108,9 @@ export const ProjectsPortfolio: React.FC = () => {
             <button
               type="button"
               onClick={() => setFilter('rural')}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
                 filter === 'rural'
-                  ? 'bg-[#102D46] text-white shadow-xs'
+                  ? 'bg-[#102D46] text-white'
                   : 'text-[#526273] hover:text-[#102D46]'
               }`}
             >
@@ -122,98 +119,69 @@ export const ProjectsPortfolio: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Nota de Governança */}
+        {/* Diretório Arquitetural em Linhas (Substitui a grade de 4 cards cinzas idênticos) */}
         <motion.div
           variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
           viewport={continuousViewport}
-          className="mb-8 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-start gap-3"
+          className="bg-white rounded-2xl border border-[#E5EBF0] divide-y divide-[#E5EBF0] overflow-hidden"
         >
-          <ShieldAlert className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
-          <div>
-            <strong className="block font-semibold">Nota de conformidade cadastral e técnica:</strong>
-            <span>
-              Em compromisso com a transparência e integridade das informações, os cases abaixo representam referências citadas em histórico comercial. Os dados de potência (kWp), geração acumulada e fotografias in loco serão publicados após a devida conclusão das autorizações de divulgação e conferência técnica dos registros.
-            </span>
-          </div>
+          {filteredProjects.map((project, idx) => (
+            <div
+              key={project.id}
+              className="p-6 sm:px-8 sm:py-6 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-center hover:bg-[#F8FAFC]/80 transition-colors"
+            >
+              {/* Nome e Localização */}
+              <div className="lg:col-span-4 space-y-1">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[#526273]">
+                  <span className="font-bold text-[#102D46] tabular-nums">
+                    {String(idx + 1).padStart(2, '0')}
+                  </span>
+                  <span aria-hidden="true">·</span>
+                  <span>{project.category}</span>
+                  <span aria-hidden="true">·</span>
+                  <span className="inline-flex items-center gap-1">
+                    <MapPin className="w-3 h-3 text-[#102D46]" />
+                    {project.city}
+                  </span>
+                </div>
+                <h3 className="text-lg font-bold text-[#102D46]">
+                  {project.name}
+                </h3>
+              </div>
+
+              {/* Descrição & Status */}
+              <div className="lg:col-span-5 space-y-1">
+                <p className="text-sm text-[#526273] leading-relaxed">
+                  {project.description}
+                </p>
+                <p className="text-xs text-slate-400">
+                  {project.validationNotice}
+                </p>
+              </div>
+
+              {/* Ação */}
+              <div className="lg:col-span-3 lg:text-right">
+                <a
+                  href="#contato"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#102D46] hover:text-[#091D2F] underline decoration-[#B8EF35] decoration-2 underline-offset-4 whitespace-nowrap"
+                >
+                  <span>Solicitar estudo equivalente</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+          ))}
         </motion.div>
 
-        {/* Grade de Cards com Motion */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={continuousViewport}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
-              <motion.div
-                key={project.id}
-                layout
-                variants={staggerItem}
-                whileHover={{ y: -6, transition: { duration: 0.25, ease: smoothEase } }}
-                className="bg-white rounded-2xl border border-[#E5EBF0] overflow-hidden hover:border-[#102D46]/40 transition-colors flex flex-col justify-between shadow-2xs hover:shadow-lg"
-              >
-                <div>
-                  {/* Placeholder Visual com Identificação Clara */}
-                  <div className="aspect-16/10 bg-linear-to-br from-[#102D46]/10 via-[#F8FAFC] to-[#E5EBF0] p-6 flex flex-col items-center justify-center text-center border-b border-[#E5EBF0] relative">
-                    <div className="w-12 h-12 rounded-xl bg-white border border-[#E5EBF0] flex items-center justify-center text-[#102D46] mb-2 shadow-2xs">
-                      <Sparkles className="w-5 h-5 text-[#102D46]" />
-                    </div>
-                    <span className="text-[11px] font-bold text-[#102D46] uppercase tracking-wider">
-                      {project.category}
-                    </span>
-                    <span className="text-[10px] text-slate-400 mt-0.5">
-                      Imagem sob validação
-                    </span>
-
-                    <span className="absolute top-3 right-3 text-[10px] font-semibold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">
-                      Em validação
-                    </span>
-                  </div>
-
-                  {/* Conteúdo do Projeto */}
-                  <div className="p-6 space-y-3">
-                    <div className="flex items-center gap-1.5 text-xs text-[#526273]">
-                      <MapPin className="w-3.5 h-3.5 text-[#102D46]" />
-                      <span>{project.city}</span>
-                    </div>
-
-                    <h3 className="text-base font-bold text-[#102D46] leading-snug">
-                      {project.name}
-                    </h3>
-
-                    <p className="text-xs text-[#526273] leading-relaxed">
-                      {project.description}
-                    </p>
-
-                    <div className="pt-2">
-                      <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-1">
-                        Status de Validação
-                      </span>
-                      <p className="text-[11px] text-[#526273] bg-[#F8FAFC] p-2.5 rounded-lg border border-[#E5EBF0] leading-relaxed">
-                        {project.validationNotice}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Ação */}
-                <div className="p-6 pt-0">
-                  <a
-                    href="#contato"
-                    className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold text-[#102D46] bg-slate-100 hover:bg-[#B8EF35] hover:text-[#091D2F] transition-colors"
-                  >
-                    <span>Solicitar estudo para seu imóvel</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        {/* Nota discreta de governança técnica */}
+        <div className="mt-5 flex items-start gap-2.5 text-xs text-[#526273]">
+          <ShieldAlert className="w-4 h-4 text-[#102D46] shrink-0 mt-0.5" />
+          <p>
+            <strong className="text-[#102D46]">Transparência de registros.</strong> Dados detalhados de potência (kWp) e geração acumulada são apresentados durante a reunião técnica mediante autorização formal de cada cliente.
+          </p>
+        </div>
       </div>
     </section>
   );

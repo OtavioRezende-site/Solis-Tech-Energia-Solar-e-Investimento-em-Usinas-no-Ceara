@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, ArrowUpRight, MessageCircle } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Phone } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 import { COMPANY_INFO, NAV_LINKS } from '../../constants/company';
 import { trackEvent } from '../../utils/tracking';
@@ -73,7 +73,7 @@ export const Header: React.FC = () => {
                 handleLinkClick('#inicio');
               }}
               className="group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#B8EF35] rounded-md transition-opacity"
-              aria-label="Solis Tech - Início"
+              aria-label="Solis Tech Início"
             >
               <BrandLogo variant={isScrolled ? 'dark' : 'light'} />
             </a>
@@ -120,20 +120,19 @@ export const Header: React.FC = () => {
 
             {/* Zona 3: Ação Principal e WhatsApp */}
             <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-              {/* WhatsApp direto */}
+              {/* Ligação telefônica direta */}
               <a
-                href={COMPANY_INFO.whatsappInvestmentUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackEvent('whatsapp_click', { source: 'header' })}
+                href={`tel:+${COMPANY_INFO.phoneRaw}`}
+                onClick={() => trackEvent('phone_call_click', { source: 'header_desktop' })}
                 className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg transition-colors focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#B8EF35] ${
                   isScrolled
                     ? 'text-[#102D46] hover:bg-slate-100'
                     : 'text-white hover:bg-white/10'
                 }`}
-                title="Atendimento Comercial no WhatsApp (Joel Patricio)"
+                title={`Ligar para ${COMPANY_INFO.phone} (${COMPANY_INFO.contactPerson})`}
+                aria-label={`Ligar para ${COMPANY_INFO.phone}`}
               >
-                <MessageCircle className="w-4 h-4 text-[#B8EF35]" />
+                <Phone className="w-4 h-4 text-[#B8EF35]" />
                 <span className="hidden xl:inline">{COMPANY_INFO.phone}</span>
               </a>
 
@@ -241,13 +240,12 @@ export const Header: React.FC = () => {
                 </button>
 
                 <a
-                  href={COMPANY_INFO.whatsappInvestmentUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={`tel:+${COMPANY_INFO.phoneRaw}`}
+                  onClick={() => trackEvent('phone_call_click', { source: 'header_mobile' })}
                   className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs font-semibold text-[#102D46] bg-slate-100 hover:bg-slate-200 transition-colors"
                 >
-                  <MessageCircle className="w-4 h-4 text-[#102D46]" />
-                  <span>WhatsApp: {COMPANY_INFO.phone}</span>
+                  <Phone className="w-4 h-4 text-[#102D46]" />
+                  <span>Ligar para {COMPANY_INFO.phone}</span>
                 </a>
               </div>
             </motion.div>

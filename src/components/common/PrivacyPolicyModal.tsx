@@ -42,7 +42,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
           <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-start gap-2.5">
             <AlertTriangle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
             <div>
-              <strong className="block font-semibold">Configuração pré-publicação:</strong>
+              <strong className="block font-semibold">Configuração antes da publicação</strong>
               <span>
                 Os canais formais do Encarregado pelo Tratamento de Dados Pessoais (DPO) e endereço eletrônico definitivo de privacidade devem ser validados pela administração da Solis Tech antes da veiculação de campanhas massivas.
               </span>
@@ -58,18 +58,18 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
 
           <section className="space-y-2">
             <h3 className="text-sm sm:text-base font-bold text-[#102D46]">2. Dados Coletados</h3>
-            <p>Coletamos exclusivamente as informações necessárias para qualificação de atendimento:</p>
+            <p>Coletamos exclusivamente as informações necessárias para qualificação de atendimento.</p>
             <ul className="list-disc pl-5 space-y-1 text-xs">
-              <li><strong>Dados de identificação e contato:</strong> Nome completo, número de WhatsApp/telefone com DDD, endereço de e-mail, cidade e estado.</li>
-              <li><strong>Dados de perfil de interesse:</strong> Faixa de investimento pretendida (Fluxo de Investimento), objetivo com usina solar, tipo de imóvel (residencial, comercial ou rural), valor médio da fatura energética e serviço desejado.</li>
-              <li><strong>Dados de navegação e campanha:</strong> Parâmetros de URL (UTM source, medium, campaign), página de entrada e dados técnicos de conexão para fins de segurança (IP de origem e data/hora).</li>
+              <li><strong>Dados de identificação e contato.</strong> Nome completo, número de WhatsApp/telefone com DDD, endereço eletrônico, cidade e estado.</li>
+              <li><strong>Dados de perfil de interesse.</strong> Faixa de investimento pretendida (Fluxo de Investimento), objetivo com usina solar, tipo de imóvel (residencial, comercial ou rural), valor médio da fatura energética e serviço desejado.</li>
+              <li><strong>Dados de navegação e campanha.</strong> Parâmetros de URL (UTM source, medium, campaign), página de entrada e dados técnicos de conexão para fins de segurança (IP de origem e data/hora).</li>
             </ul>
           </section>
 
           <section className="space-y-2">
             <h3 className="text-sm sm:text-base font-bold text-[#102D46]">3. Finalidade e Base Legal (LGPD)</h3>
             <p>
-              O tratamento de dados é realizado com fundamento no <strong>Consentimento do Titular (art. 7º, I da Lei 13.709/2018 - LGPD)</strong> e em <strong>Procedimentos Preliminares relacionados a contrato a pedido do titular (art. 7º, V)</strong>, visando:
+              O tratamento de dados é realizado com fundamento no <strong>Consentimento do Titular (art. 7º, I da Lei 13.709/2018, LGPD)</strong> e em <strong>Procedimentos Preliminares relacionados a contrato a pedido do titular (art. 7º, V)</strong>, com as finalidades abaixo.
             </p>
             <ul className="list-disc pl-5 space-y-1 text-xs">
               <li>Retornar o contato para apresentação do modelo de usinas solares para investimento e locação;</li>
@@ -82,7 +82,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
           <section className="space-y-2">
             <h3 className="text-sm sm:text-base font-bold text-[#102D46]">4. Compartilhamento e Integrações Seguras</h3>
             <p>
-              Os dados coletados podem ser transmitidos de forma criptografada para o sistema de gestão comercial configurado pelo controlador (ex: webhook para CRM, n8n, Make) ou direcionados para atendimento oficial no WhatsApp sob a ação do próprio usuário. Não comercializamos, alugamos ou compartilhamos dados pessoais com terceiros para fins alheios ao atendimento solicitado.
+              Os dados coletados podem ser transmitidos de forma criptografada para o sistema de gestão comercial configurado pelo controlador (como webhook para CRM, n8n ou Make) ou direcionados para atendimento oficial no WhatsApp sob a ação do próprio usuário. Não comercializamos, alugamos ou compartilhamos dados pessoais com terceiros para fins alheios ao atendimento solicitado.
             </p>
           </section>
 
@@ -96,12 +96,12 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
           <section className="space-y-2">
             <h3 className="text-sm sm:text-base font-bold text-[#102D46]">6. Contato do Encarregado (DPO)</h3>
             <p>
-              Para exercer seus direitos de privacidade, utilize o canal de atendimento oficial da empresa:
+              Para exercer seus direitos de privacidade, utilize o canal de atendimento oficial da empresa.
             </p>
             <div className="p-3 rounded-lg bg-[#F8FAFC] border border-[#E5EBF0] text-xs">
-              <p><strong>Encarregado de Dados (DPO):</strong> [Canal a ser preenchido antes da publicação oficial]</p>
-              <p><strong>Telefone / WhatsApp Comercial:</strong> {COMPANY_INFO.phone}</p>
-              <p><strong>Unidade Comercial:</strong> {COMPANY_INFO.units.commercial.fullAddress}</p>
+              <p><strong>Encarregado de Dados (DPO)</strong> [Canal a ser preenchido antes da publicação oficial]</p>
+              <p><strong>Telefone e WhatsApp Comercial</strong> {COMPANY_INFO.phone}</p>
+              <p><strong>Unidade Comercial</strong> {COMPANY_INFO.units.commercial.fullAddress}</p>
             </div>
           </section>
         </div>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Phone, MapPin, Clock, ArrowUp, Instagram, MessageCircle, FileText } from 'lucide-react';
+import { Phone, MapPin, Clock, ArrowUp, Instagram, FileText } from 'lucide-react';
+import { WhatsAppIcon } from './BrandIcons';
 import { BrandLogo } from './BrandLogo';
 import { COMPANY_INFO, NAV_LINKS } from '../../constants/company';
 
@@ -26,7 +27,7 @@ export const Footer: React.FC = () => {
 
             <div className="space-y-1 text-xs text-slate-400 pt-2">
               <p><strong className="text-slate-300 font-semibold">{COMPANY_INFO.legalName}</strong></p>
-              <p className="tabular-nums">CNPJ: {COMPANY_INFO.cnpj}</p>
+              <p className="tabular-nums">CNPJ {COMPANY_INFO.cnpj}</p>
             </div>
 
             {/* Redes Sociais Oficiais e Validadas */}
@@ -39,7 +40,7 @@ export const Footer: React.FC = () => {
                 aria-label="WhatsApp da Solis Tech"
                 title="WhatsApp Comercial (Joel Patricio)"
               >
-                <MessageCircle className="w-4 h-4" />
+                <WhatsAppIcon className="w-4 h-4" />
               </a>
               <a
                 href={COMPANY_INFO.social.instagramOfficial}
@@ -134,13 +135,13 @@ export const Footer: React.FC = () => {
                   >
                     {COMPANY_INFO.phone}
                   </a>
-                  <span className="text-slate-400 text-[11px]">Contato Comercial: {COMPANY_INFO.contactPerson}</span>
+                  <span className="text-slate-400 text-[11px]">Contato Comercial ({COMPANY_INFO.contactPerson})</span>
                 </div>
               </li>
               <li className="flex items-start gap-2 pt-1 text-slate-400">
                 <Clock className="w-4 h-4 text-[#B8EF35] shrink-0 mt-0.5" />
                 <div>
-                  <span className="block text-slate-300 font-medium">Unidade Cariri:</span>
+                  <span className="block text-slate-300 font-medium">Unidade Cariri</span>
                   <span>{COMPANY_INFO.units.commercial.hours.weekdays}</span>
                   <span className="block">{COMPANY_INFO.units.commercial.hours.saturday}</span>
                 </div>
@@ -159,11 +160,11 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Linha inferior de copyright e legal */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 text-center sm:text-left">
           <p>
-            © {new Date().getFullYear()} Solis Tech ({COMPANY_INFO.legalName} • CNPJ: {COMPANY_INFO.cnpj}). Todos os direitos reservados.
+            © {new Date().getFullYear()} Solis Tech ({COMPANY_INFO.legalName} • CNPJ {COMPANY_INFO.cnpj}). Todos os direitos reservados.
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <span>Juazeiro do Norte & Iguatu, Ceará</span>
             <button
               type="button"

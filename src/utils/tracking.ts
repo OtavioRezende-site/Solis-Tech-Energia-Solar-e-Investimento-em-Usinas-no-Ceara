@@ -67,6 +67,7 @@ export function getOrCaptureUtmData(currentInterest?: string): UtmData {
 export type TrackingEventType =
   | 'page_view'
   | 'whatsapp_click'
+  | 'phone_call_click'
   | 'investment_cta_click'
   | 'quote_cta_click'
   | 'form_start'

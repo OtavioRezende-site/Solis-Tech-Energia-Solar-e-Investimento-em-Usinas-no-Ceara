@@ -4,8 +4,6 @@ import { z } from 'zod';
 import {
   Send,
   CheckCircle2,
-  MessageCircle,
-  Phone,
   Clock,
   MapPin,
   TrendingUp,
@@ -15,6 +13,7 @@ import {
   ArrowRight,
   Loader2,
 } from 'lucide-react';
+import { WhatsAppIcon } from '../common/BrandIcons';
 import { COMPANY_INFO } from '../../constants/company';
 import { maskPhone, unmaskPhone } from '../../utils/mask';
 import { getOrCaptureUtmData, trackEvent } from '../../utils/tracking';
@@ -33,7 +32,7 @@ const investmentSchema = z.object({
     .trim()
     .refine((val) => unmaskPhone(val).length >= 10, 'Informe seu WhatsApp com DDD (mínimo 10 dígitos).'),
   email: z.string().trim().email('Informe um endereço de e-mail válido.'),
-  cityState: z.string().trim().min(2, 'Informe sua cidade e estado no Ceará (ex: Juazeiro do Norte/CE).'),
+  cityState: z.string().trim().min(2, 'Informe sua cidade e estado no Ceará (como Juazeiro do Norte/CE).'),
   investmentRange: z.enum([
     'ate-100k',
     '100k-200k',
@@ -62,7 +61,7 @@ const quoteSchema = z.object({
     .trim()
     .refine((val) => unmaskPhone(val).length >= 10, 'Informe seu WhatsApp com DDD (mínimo 10 dígitos).'),
   email: z.string().trim().email('Informe um endereço de e-mail válido.'),
-  cityState: z.string().trim().min(2, 'Informe sua cidade e estado (ex: Iguatu/CE).'),
+  cityState: z.string().trim().min(2, 'Informe sua cidade e estado (como Iguatu/CE).'),
   propertyType: z.enum(['residencial', 'comercial', 'rural'], {
     message: 'Selecione o tipo de imóvel.',
   }),
@@ -160,6 +159,43 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
     formB.setValue('phone', maskPhone(e.target.value));
   };
 
+  // Envio resiliente: usa /api/leads quando disponível e faz fallback direto para WhatsApp em hospedagem estática (ex: GitHub Pages)
+  const submitLeadPayload = async (payload: Record<string, unknown>): Promise<LeadSubmissionResponse> => {
+    const fallbackResponse = (): LeadSubmissionResponse => ({
+      success: true,
+      leadId: `solis_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      mode: 'direct_whatsapp_fallback',
+      message: 'Seus dados foram validados com sucesso e estão prontos para envio direto via WhatsApp para nossa equipe comercial.',
+    });
+
+    try {
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const contentType = res.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        // Hospedagem estática (404/405 em HTML no GitHub Pages)
+        return fallbackResponse();
+      }
+
+      const result: LeadSubmissionResponse = await res.json();
+      if (!res.ok || !result.success) {
+        throw new Error(result.message || 'Erro ao processar envio no servidor.');
+      }
+
+      return result;
+    } catch (err: any) {
+      // Se for erro de validação explícito retornado pela API JSON, propaga; caso contrário (rede/estático), usa fallback WhatsApp
+      if (err instanceof Error && err.message && !err.message.includes('Failed to fetch') && !err.message.includes('Unexpected token')) {
+        throw err;
+      }
+      return fallbackResponse();
+    }
+  };
+
   // Submissão do Fluxo A: Investimento
   const onSubmitA = async (data: InvestmentFormData) => {
     setServerError(null);
@@ -173,17 +209,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
         utm: utmData,
       };
 
-      const res = await fetch('/api/leads', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      const result: LeadSubmissionResponse = await res.json();
-
-      if (!res.ok || !result.success) {
-        throw new Error(result.message || 'Erro ao processar envio no servidor.');
-      }
+      const result = await submitLeadPayload(payload);
 
       // Evento generate_lead disparado APENAS após confirmação
       trackEvent('generate_lead', {
@@ -216,17 +242,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
         utm: utmData,
       };
 
-      const res = await fetch('/api/leads', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      const result: LeadSubmissionResponse = await res.json();
-
-      if (!res.ok || !result.success) {
-        throw new Error(result.message || 'Erro ao processar envio no servidor.');
-      }
+      const result = await submitLeadPayload(payload);
 
       // Evento generate_lead disparado APENAS após confirmação
       trackEvent('generate_lead', {
@@ -268,15 +284,15 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
       };
 
       text =
-        `*Solicitação de Informações — Usinas para Investimento*\n\n` +
+        `*Solicitação de Informações sobre Usinas para Investimento*\n\n` +
         `Olá, Joel! Conheci a Solis Tech pelo site e gostaria de receber informações sobre as usinas solares para investimento e o modelo de locação.\n\n` +
-        `*Nome:* ${submittedLeadData.fullName}\n` +
-        `*WhatsApp:* ${submittedLeadData.phone}\n` +
-        `*E-mail:* ${submittedLeadData.email}\n` +
-        `*Cidade/Estado:* ${submittedLeadData.cityState}\n` +
-        `*Faixa Pretendida:* ${rangeMap[submittedLeadData.investmentRange] || submittedLeadData.investmentRange}\n` +
-        `*Objetivo:* ${objectiveMap[submittedLeadData.objective] || submittedLeadData.objective}\n` +
-        `*Preferência de contato:* ${submittedLeadData.contactPreference}`;
+        `*Nome* ${submittedLeadData.fullName}\n` +
+        `*WhatsApp* ${submittedLeadData.phone}\n` +
+        `*E-mail* ${submittedLeadData.email}\n` +
+        `*Cidade/Estado* ${submittedLeadData.cityState}\n` +
+        `*Faixa Pretendida* ${rangeMap[submittedLeadData.investmentRange] || submittedLeadData.investmentRange}\n` +
+        `*Objetivo* ${objectiveMap[submittedLeadData.objective] || submittedLeadData.objective}\n` +
+        `*Preferência de contato* ${submittedLeadData.contactPreference}`;
     } else {
       const propertyMap: Record<string, string> = {
         residencial: 'Residencial',
@@ -299,16 +315,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
       };
 
       text =
-        `*Solicitação de Orçamento Solar — Solis Tech*\n\n` +
+        `*Solicitação de Orçamento Solar da Solis Tech*\n\n` +
         `Olá! Conheci a Solis Tech pelo site e gostaria de solicitar um orçamento de energia solar.\n\n` +
-        `*Nome:* ${submittedLeadData.fullName}\n` +
-        `*WhatsApp:* ${submittedLeadData.phone}\n` +
-        `*E-mail:* ${submittedLeadData.email}\n` +
-        `*Cidade/Estado:* ${submittedLeadData.cityState}\n` +
-        `*Tipo de Imóvel:* ${propertyMap[submittedLeadData.propertyType] || submittedLeadData.propertyType}\n` +
-        `*Valor Médio da Conta:* ${billMap[submittedLeadData.billRange] || submittedLeadData.billRange}\n` +
-        `*Serviço Desejado:* ${serviceMap[submittedLeadData.serviceDesired] || submittedLeadData.serviceDesired}\n` +
-        (submittedLeadData.additionalInfo ? `*Informações Adicionais:* ${submittedLeadData.additionalInfo}` : '');
+        `*Nome* ${submittedLeadData.fullName}\n` +
+        `*WhatsApp* ${submittedLeadData.phone}\n` +
+        `*E-mail* ${submittedLeadData.email}\n` +
+        `*Cidade/Estado* ${submittedLeadData.cityState}\n` +
+        `*Tipo de Imóvel* ${propertyMap[submittedLeadData.propertyType] || submittedLeadData.propertyType}\n` +
+        `*Valor Médio da Conta* ${billMap[submittedLeadData.billRange] || submittedLeadData.billRange}\n` +
+        `*Serviço Desejado* ${serviceMap[submittedLeadData.serviceDesired] || submittedLeadData.serviceDesired}\n` +
+        (submittedLeadData.additionalInfo ? `*Informações Adicionais* ${submittedLeadData.additionalInfo}` : '');
     }
 
     trackEvent('whatsapp_click', { action: 'post_submission_continuation' });
@@ -321,24 +337,23 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Coluna Esquerda: Informações Comerciais & Canais Oficiais (5 cols) */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#102D46]">
-              <span className="w-2 h-2 rounded-full bg-[#B8EF35]" />
-              <span>Atendimento Comercial</span>
-            </div>
+            <span className="text-xs font-bold uppercase tracking-widest text-[#102D46] block">
+              Estudo de Viabilidade &amp; ROI
+            </span>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#102D46] tracking-tight leading-tight text-balance">
-              Qualifique sua demanda com nossa equipe especializada
+              Receba o estudo completo do seu investimento
             </h2>
 
             <p className="text-base text-[#526273] leading-relaxed">
-              Dispomos de dois fluxos estruturados de atendimento: consultoria sobre usinas para investimento e locação no Ceará ou projetos fotovoltaicos sob medida para imóveis residenciais, comerciais e rurais.
+              Preencha seu perfil ao lado para receber a apresentação do modelo de locação de usinas (até R$ 6.300/mês conforme porte) ou solicitar um projeto fotovoltaico para sua empresa ou propriedade.
             </p>
 
-            {/* Cartões de Contato Validados */}
-            <div className="space-y-3.5 pt-2">
-              <div className="p-4 rounded-xl bg-white border border-[#E5EBF0] shadow-2xs flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-lg bg-[#102D46] text-[#B8EF35] flex items-center justify-center shrink-0">
-                  <Phone className="w-5 h-5" />
+            {/* Canais Oficiais em Lista Limpa Hairline */}
+            <div className="divide-y divide-[#E5EBF0] border-y border-[#E5EBF0] pt-1">
+              <div className="py-4 flex items-start gap-3.5">
+                <div className="w-9 h-9 rounded-lg bg-[#102D46] text-[#B8EF35] flex items-center justify-center shrink-0 mt-0.5">
+                  <WhatsAppIcon className="w-4 h-4" />
                 </div>
                 <div>
                   <strong className="block text-sm font-bold text-[#102D46]">
@@ -350,14 +365,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
                     rel="noopener noreferrer"
                     className="text-xs text-[#102D46] hover:underline font-semibold"
                   >
-                    {COMPANY_INFO.phone} — Iniciar conversa
+                    {COMPANY_INFO.phone}, falar diretamente agora
                   </a>
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-white border border-[#E5EBF0] shadow-2xs flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-lg bg-[#102D46] text-[#B8EF35] flex items-center justify-center shrink-0">
-                  <Clock className="w-5 h-5" />
+              <div className="py-4 flex items-start gap-3.5">
+                <div className="w-9 h-9 rounded-lg bg-[#102D46] text-[#B8EF35] flex items-center justify-center shrink-0 mt-0.5">
+                  <Clock className="w-4 h-4" />
                 </div>
                 <div>
                   <strong className="block text-sm font-bold text-[#102D46]">
@@ -372,23 +387,23 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-white border border-[#E5EBF0] shadow-2xs flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-lg bg-[#102D46] text-[#B8EF35] flex items-center justify-center shrink-0">
-                  <MapPin className="w-5 h-5" />
+              <div className="py-4 flex items-start gap-3.5">
+                <div className="w-9 h-9 rounded-lg bg-[#102D46] text-[#B8EF35] flex items-center justify-center shrink-0 mt-0.5">
+                  <MapPin className="w-4 h-4" />
                 </div>
                 <div>
                   <strong className="block text-sm font-bold text-[#102D46]">
                     Atendimento Presencial
                   </strong>
                   <span className="text-xs text-[#526273] block">
-                    {COMPANY_INFO.units.commercial.brand} — {COMPANY_INFO.units.commercial.city}
+                    {COMPANY_INFO.units.commercial.brand}, {COMPANY_INFO.units.commercial.city}
                   </span>
                 </div>
               </div>
             </div>
 
             {/* Aviso de Transparência LGPD */}
-            <div className="p-4 rounded-xl bg-white border border-[#E5EBF0] text-xs text-[#526273] flex items-start gap-2.5">
+            <div className="text-xs text-[#526273] flex items-start gap-2.5 pt-1">
               <Lock className="w-4 h-4 text-[#102D46] shrink-0 mt-0.5" />
               <span>
                 Seus dados serão tratados com segurança e confidencialidade nos termos da LGPD, exclusivamente para o contato comercial da Solis Tech.
@@ -397,9 +412,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
           </div>
 
           {/* Coluna Direita: Os Dois Fluxos de Conversão (7 cols) */}
-          <div className="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-10 border border-[#E5EBF0] shadow-sm">
+          <div className="lg:col-span-7 bg-white rounded-2xl p-5 sm:p-10 border border-[#E5EBF0] shadow-sm">
             {/* Seletor de Fluxos com Tabs Acessíveis */}
-            <div className="flex p-1.5 bg-[#F8FAFC] rounded-xl border border-[#E5EBF0] mb-8">
+            <div className="grid grid-cols-2 gap-1.5 p-1.5 bg-[#F8FAFC] rounded-xl border border-[#E5EBF0] mb-7 sm:mb-8">
               <button
                 type="button"
                 onClick={() => {
@@ -407,13 +422,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
                   setIsSubmitted(false);
                   setServerError(null);
                 }}
-                className={`flex-1 py-3 px-4 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                className={`py-2.5 sm:py-3 px-2.5 sm:px-4 rounded-lg text-[11px] sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 sm:gap-2 text-center leading-tight cursor-pointer ${
                   activeTab === 'investimento'
                     ? 'bg-[#102D46] text-white shadow-xs'
                     : 'text-[#526273] hover:text-[#102D46]'
                 }`}
               >
-                <TrendingUp className="w-4 h-4 text-[#B8EF35]" />
+                <TrendingUp className="w-4 h-4 text-[#B8EF35] shrink-0" />
                 <span>Usinas para Investimento</span>
               </button>
 
@@ -424,13 +439,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
                   setIsSubmitted(false);
                   setServerError(null);
                 }}
-                className={`flex-1 py-3 px-4 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                className={`py-2.5 sm:py-3 px-2.5 sm:px-4 rounded-lg text-[11px] sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 sm:gap-2 text-center leading-tight cursor-pointer ${
                   activeTab === 'orcamento-solar'
                     ? 'bg-[#102D46] text-white shadow-xs'
                     : 'text-[#526273] hover:text-[#102D46]'
                 }`}
               >
-                <Sun className="w-4 h-4 text-[#B8EF35]" />
+                <Sun className="w-4 h-4 text-[#B8EF35] shrink-0" />
                 <span>Projeto Fotovoltaico</span>
               </button>
             </div>
@@ -440,7 +455,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
               <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-900 text-xs mb-6 flex items-start gap-2.5">
                 <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
                 <div>
-                  <strong className="block font-semibold">Aviso de envio:</strong>
+                  <strong className="block font-semibold">Aviso de envio</strong>
                   <span>{serverError}</span>
                 </div>
               </div>
@@ -467,14 +482,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
                     Deseja agilizar o atendimento agora?
                   </span>
                   <p className="text-xs text-[#526273] leading-relaxed">
-                    Você pode abrir uma conversa oficial no WhatsApp com <strong>Joel Patricio</strong> com todas as informações da sua solicitação pré-preenchidas.
+                    Você pode abrir uma conversa oficial no WhatsApp com <strong>Joel Patricio</strong> com todas as informações da sua solicitação já preenchidas.
                   </p>
                   <button
                     type="button"
                     onClick={handleOpenWhatsAppFromSubmission}
                     className="w-full inline-flex items-center justify-center gap-2 py-3 px-5 rounded-xl font-bold text-xs sm:text-sm text-[#091D2F] bg-[#B8EF35] hover:bg-[#A3DC22] transition-colors cursor-pointer"
                   >
-                    <MessageCircle className="w-4 h-4" />
+                    <WhatsAppIcon className="w-4 h-4 shrink-0" />
                     <span>Continuar conversa no WhatsApp</span>
                   </button>
                 </div>
@@ -532,7 +547,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
                         id="inv-fullName"
                         type="text"
                         {...formA.register('fullName')}
-                        placeholder="Ex: Carlos Eduardo de Oliveira"
+                        placeholder="Carlos Eduardo de Oliveira"
                         className={`w-full px-4 py-3 rounded-xl border text-sm text-[#102D46] bg-[#F8FAFC] focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-[#102D46] transition-all ${
                           formA.formState.errors.fullName ? 'border-red-500' : 'border-[#E5EBF0]'
                         }`}
@@ -597,7 +612,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
                         id="inv-cityState"
                         type="text"
                         {...formA.register('cityState')}
-                        placeholder="Ex: Juazeiro do Norte/CE, Iguatu/CE, Fortaleza/CE..."
+                        placeholder="Juazeiro do Norte/CE, Iguatu/CE ou Fortaleza/CE"
                         className={`w-full px-4 py-3 rounded-xl border text-sm text-[#102D46] bg-[#F8FAFC] focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-[#102D46] transition-all ${
                           formA.formState.errors.cityState ? 'border-red-500' : 'border-[#E5EBF0]'
                         }`}
@@ -828,7 +843,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ selectedInterest
                         id="quo-cityState"
                         type="text"
                         {...formB.register('cityState')}
-                        placeholder="Ex: Juazeiro do Norte/CE, Crato/CE, Iguatu/CE..."
+                        placeholder="Juazeiro do Norte/CE, Crato/CE ou Iguatu/CE"
                         className={`w-full px-4 py-3 rounded-xl border text-sm text-[#102D46] bg-[#F8FAFC] focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-[#102D46] transition-all ${
                           formB.formState.errors.cityState ? 'border-red-500' : 'border-[#E5EBF0]'
                         }`}
